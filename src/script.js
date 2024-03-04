@@ -6,7 +6,7 @@ import GUI from 'lil-gui'
  * Base
  */
 // Debug
-const gui = new GUI()
+const gui = new GUI({width: 360})
 
 // Canvas
 const canvas = document.querySelector('canvas.webgl')
@@ -20,10 +20,28 @@ const parameters = {}
 parameters.count = 1000
 parameters.size = 0.02
 
-const generateGalaxy = () => {
-    const galaxyGeometry = new THREE.BufferGeometry()
+gui.add(parameters, 'count').min(100).max(5000).step(100).onFinishChange( () => {
+    generateGalaxy()
+})
+gui.add(parameters, 'size').min(0.001).max(0.3).step(0.001).onFinishChange( () => {
+    generateGalaxy()
+})
 
-    const positions = new Float32Array(parameters.count * 3)
+let galaxyGeometry = null
+let galaxyMaterial = null
+let points = null
+
+const generateGalaxy = () => {
+
+    if (points !== null) {
+        galaxyGeometry.dispose()
+        galaxyMaterial.dispose() 
+        scene.remove(points)
+    }
+
+    galaxyGeometry = new THREE.BufferGeometry()
+
+    let positions = new Float32Array(parameters.count * 3)
 
     for (let i=0; i<parameters.count; i++) {
 
@@ -41,7 +59,7 @@ const generateGalaxy = () => {
     )
     
     // Material
-    const material = new THREE.PointsMaterial(
+    galaxyMaterial = new THREE.PointsMaterial(
         {
             size: parameters.size,
             sizeAttenuation: true,
@@ -51,7 +69,7 @@ const generateGalaxy = () => {
     )
     
     // Points
-    const points = new THREE.Points(galaxyGeometry, material)
+    points = new THREE.Points(galaxyGeometry, galaxyMaterial)
     scene.add(points)
 }
 
