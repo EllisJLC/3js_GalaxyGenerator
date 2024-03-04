@@ -40,6 +40,7 @@ const generateGalaxy = () => {
         new THREE.BufferAttribute(positions, 3)
     )
     
+    // Material
     const material = new THREE.PointsMaterial(
         {
             size: parameters.size,
@@ -48,7 +49,10 @@ const generateGalaxy = () => {
             blending: true
         }
     )
-
+    
+    // Points
+    const points = new THREE.Points(galaxyGeometry, material)
+    scene.add(points)
 }
 
 generateGalaxy()
