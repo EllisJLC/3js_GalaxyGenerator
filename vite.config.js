@@ -1,7 +1,7 @@
 export default {
     root: 'src/',
     publicDir: '../static/',
-    base: './',
+    base: '/3js_GalaxyGenerator/',
     server:
     {
         host: true, // Open to local network and display URL
